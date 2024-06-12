@@ -1,0 +1,38 @@
+﻿@model Frontend.Web.Models.TaskSetup.BackEndTaskModel
+
+<!-- Add User Modal -->
+<div class="modal fade" id="addUserModal" tabindex="-1" aria-labelledby="addUserModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addUserModalLabel">Add</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onclick="clearFields()"></button>
+            </div>
+            <div class="modal-body">
+                <form id="addMultipleUserForm" asp-action="Create" asp-controller="Dashboard" method="post">
+                    <div class="mb-3">
+                        <label for="Title" class="form-label">Name</label>
+                        <input type="text" class="form-control" id="Name" name="Name" asp-for="@Model.PostModel.Name" placeholder="Enter Item Name" autocomplete="off" required>
+                        <div class="invalid-feedback" id="gradeError">Invlaid Grade</div>
+                    </div>
+                    <button type="submit" class="btn btn-success" id="addUserSubmitBtn">Save</button>
+                </form>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    function clearFields() {
+        // Clear the value of inputs
+        document.getElementById('Title').value = '';
+        document.getElementById('description').value = '';
+        document.getElementById('categories').value = '';
+        document.getElementById('price').value = '';
+        document.getElementById('quantity').value = '';
+    }
+
+</script>

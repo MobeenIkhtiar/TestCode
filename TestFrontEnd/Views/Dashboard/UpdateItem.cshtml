@@ -1,0 +1,18 @@
+﻿@model Frontend.Web.Models.TaskSetup.BackEndTaskModel
+
+<!-- Add User Modal -->
+<div class="modal fade" id="updateUserModal" tabindex="-1" aria-labelledby="updateUserModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addUserModalLabel">Update User</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div id="Updateproduct">
+                    @await Component.InvokeAsync("UpdateItem")
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
