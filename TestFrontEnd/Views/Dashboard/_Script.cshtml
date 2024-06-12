@@ -1,0 +1,87 @@
+﻿<script>
+
+    function hideMessages() {
+        setTimeout(function () {
+            var successAlert = document.querySelector('.alert-success');
+            var updateAlert = document.querySelectorAll('.alert-primary');
+            var deleteAlert = document.querySelectorAll('.delete-message');
+
+            // Check if success message is present
+            if (successAlert) {
+                successAlert.style.display = 'none'; // Hide the success message
+            }
+
+            // Check if update messages are present
+            if (updateAlert) {
+                updateAlert.forEach(function (alert) {
+                    alert.style.display = 'none'; // Hide each update message
+                });
+            }
+            // Check if delete messages are present
+            if (deleteAlert) {
+                alert.style.display = 'none'; // Hide each update message
+            }
+        }, 3000);
+    }
+
+    // Call the hideMessages function on page load
+    hideMessages();
+
+    function UpdateItem(userId) {
+       
+        $.ajax({
+            type: 'GET',
+            url: '/Dashboard/UpdateItemView', // Replace with your controller and action method
+            data: { userId: userId },
+            success: function (response) {
+                // Append the response (view component content) to a placeholder element
+                $('#Updateproduct').html(response);
+                $("#updateUserModal").modal("show");
+            },
+            error: function () {
+                // Handle error
+                console.error('Error occurred while fetching update product component.');
+            }
+        });
+    };
+    function DeleteItem(Id) {
+        // Set the itemId in the modal form (if needed)
+        $("#Id").val(Id);
+        //document.getElementById('deleteItemId').value = itemId;
+        $("#DeleteItemModal").modal("show");
+    }
+
+    function CloseModal() {
+        // Set the itemId in the modal form (if needed)
+        $("#DeleteItemModal").modal("hide");
+    }
+
+    function confirmDelete() {
+        // Perform delete operation here
+        var productId = document.getElementById('Id').value;
+        console.log("Deleting item with ID:", productId);
+        $.ajax({
+            url: '/Dashboard/Delete',
+            type: 'Delete',
+            data: { Id: productId }, // Pass the user ID to the server
+            success: function (result) {
+                // Handle success response
+                location.reload();
+                console.log("Item deleted successfully");
+            },
+            error: function (xhr, status, error) {
+                // Handle error response
+                console.error("Error deleting user:", error);
+            }
+        });
+    }
+
+    function clearFields() {
+        // Clear the value of quantity and price inputs
+        document.getElementById('quantity').value = '';
+        document.getElementById('price').value = '';
+    }
+
+
+
+</script>

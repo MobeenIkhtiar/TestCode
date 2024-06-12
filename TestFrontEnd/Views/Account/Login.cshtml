@@ -1,0 +1,83 @@
+@model Frontend.Web.Models.UsersSetup.LoginModel
+@{
+    ViewData["Title"] = "Login";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    .fa {
+        color: white
+    }
+</style>
+<div class="wrapper ">
+
+    <div class="block-center mt-4 wd-xl">
+        <!-- START card-->
+        <div class="card card-flat cls-card-flat">
+            <div class="card-header text-center">
+                <a href="@Url.Action("Index","Home")">
+                    <img class="block-center rounded" src="~/images/Sap/sap-white-logo.png" alt="Image" />
+                </a>
+            </div>
+            <div class="card-body  double-up cls_loginForm">
+                <p class="text-center py-2">SIGN IN TO CONTINUE.</p>
+                <form class="mb-3" id="loginForm" novalidate="novalidate" asp-action="Login" asp-controller="Account">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="form-group">
+                        <div class="input-group with-focus">
+                            <input class="form-control border-right-0" name="Username" type="email" placeholder="Enter email" autocomplete="off" required="required" />
+                            <div class="input-group-append">
+                                <span class="input-group-text text-muted bg-transparent border-left-0">
+                                    <em class="fa fa-envelope"></em>
+                                </span>
+                            </div>
+                            <span asp-validation-for="Username" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="input-group with-focus">
+                            <input class="form-control border-right-0" asp-for="Password" type="password" placeholder="Password" required="required" />
+                            <div class="input-group-append">
+                                <span class="input-group-text text-muted bg-transparent border-left-0">
+                                    <em class="fa fa-lock"></em>
+                                </span>
+                            </div>
+                            <span asp-validation-for="Password" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="clearfix">
+                        <div class="checkbox c-checkbox float-left mt-0">
+                            <label>
+                                <input type="checkbox" asp-for="RememberMe" />
+                                <span class="fa fa-check"></span>Remember Me
+                            </label>
+                        </div>
+                        <div class="float-right">
+                            <a style="color:white !important" href="@Url.Action("ForgotPassword")">Forgot your password?</a>
+                        </div>
+                    </div>
+                    <button class="btn btn-block btn-primary mt-3" type="submit" onclick="LoginSubmit();">Login</button>
+                </form>
+               
+
+                <p class="pt-3 text-center">Need to Signup?</p><a asp-action="Register" asp-controller="Account" class="btn btn-block btn-secondary">Register Now</a>
+            </div>
+        </div>
+        <!-- END card-->
+    </div>
+</div>
+<input type="hidden" value="@(ViewBag.BasePath ?? String.Empty)" id="hiddenApiPath" />
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+             var message = '@(TempData["ErrorMessage"])';
+            var validation = '@(TempData["Validation"])';
+            showMessage(message, validation);
+            ApiStatus($("#hiddenApiPath").val());
+        });
+        function LoginSubmit() {
+            $(".cls_loginForm").addClass('whirl');
+            $("#loginForm").submit();
+        }
+    </script>
+
+}

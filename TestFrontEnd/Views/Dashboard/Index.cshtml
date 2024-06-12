@@ -1,0 +1,140 @@
+﻿@model Frontend.Web.Models.TaskSetup.BackEndTaskModel
+@using Microsoft.AspNetCore.Http;
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor accessor
+@{
+    ViewData["Title"] = "Login";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+@{
+    // Retrieve the error message from TempData
+    string errorMessage = TempData["ErrorMessage"] as string;
+}
+@if (!string.IsNullOrEmpty(errorMessage))
+{
+    <div class="alert alert-danger alert alert-dismissible fade show" role="alert">
+        @errorMessage
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
+@{
+    string successMessage = TempData["SuccessMessage"] as string;
+}
+@if (!string.IsNullOrEmpty(successMessage))
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        @successMessage
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
+@{
+    // Retrieve the update message from TempData
+    string updateMessage = TempData["UpdateMessage"] as string;
+}
+@if (!string.IsNullOrEmpty(updateMessage))
+{
+    <div class="alert alert-primary alert-dismissible fade show" role="alert">
+        @updateMessage
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
+@{
+    // Retrieve the delete message from TempData
+    string deleteMessage = TempData["DeleteMessage"] as string;
+}
+@if (!string.IsNullOrEmpty(deleteMessage))
+{
+    <div class="alert alert-danger alert delete-message alert-dismissible fade show" role="alert">
+        @deleteMessage
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+@* Top navigation menu *@
+
+<div class="card mt-5">
+    <div class="card-body">
+        <div class="mb-3 text-end">
+            <button id="addUserButton" class="btn btn-success fw-bold text-uppercase" style="width: 20%;" type="button" data-bs-toggle="modal" data-bs-target="#addUserModal">Add</button>
+        </div>
+
+        <div class="table-responsive" style="max-height: 400px; overflow-y: auto;">
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col"> Name</th>
+                            <th scope="col">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="productTableBody">
+                        @if (Model.BackendTask.Count > 0)
+                        {
+                            @foreach (var item in Model.BackendTask.OrderBy(p => p.Id))
+                            {
+                                <tr>
+                                    <td>@item.Id</td>
+                                    <td>@item.Name</td>
+                                    
+                                      <td>
+                                        <a style="cursor: pointer;" onclick="UpdateItem(@item.Id)"><button class="btn btn-info">Edit</button></a>
+                                        <a style="cursor: pointer;" onclick="DeleteItem(@item.Id)" class="text-info" data-toggle="modal" title="Delete Item" data-target="#DeleteItemModal"><button class="btn btn-danger">Delete</button></a>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr id="noDataMessage">
+                                <td colspan="12" class="text-center mx-auto"><h5 class="mt-4">Products Not Available</h5></td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+       
+    </div>
+</div>
+
+
+<div class="modal fade" id="DeleteItemModal" tabindex="-1" role="dialog" aria-labelledby="DeleteItemModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="DeleteItemModalLabel">Delete Item</h5>
+                <button type="button" class="close" onclick="CloseModal()" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="form-group">
+                <input type="hidden" name="Id" id="Id" />
+            </div>
+            <div class="modal-body">
+                <!-- Modal content -->
+                Are you sure you want to delete this item?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" onclick="CloseModal()">Close</button>
+                <button type="button" class="btn btn-danger" onclick="confirmDelete()">Delete</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+
+    <partial name="_Script" />
+}
+
+@section ModalSection {
+
+    <partial name="AddItem" model="@Model" />
+    <partial name="UpdateItem" model="@Model" />
+}
+
